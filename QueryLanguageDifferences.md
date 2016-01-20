@@ -1,0 +1,6 @@
+# Differences Between MC\_Google\_Visualization and Reference Query Language #
+MC\_Google\_Visualization tries to be exactly compatible with the query language [defined by Google](http://code.google.com/apis/visualization/documentation/querylanguage.html), but writing this in PHP makes some choices easier than others.  Here's where there are still known incompatibilies between our implementations:
+## Format Strings ##
+The Google Visualization Query Language defines their formats as patterns supported by [ICU](http://www.icu-project.org/).  Since PHP has no built-in support for these patterns, we instead use the default patterns provided by PHP.  For date, timeofday, and datetime fields, we use PHP `date()` formatting strings.
+
+For number fields, we use a custom set of patterns that match the most common formatting styles.  A format string of "num:x" runs the number through `number_format` and shows `x` decimal places.  The special format string "dollars" will prepend the string with a dollar sign and format the number to two decimal places.  The format string "percent" will multiply the number by 100, format it to one decimal place, and append a percent sign.  Anything else will be treated as a `sprintf()` format string.
